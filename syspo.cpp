@@ -1,4 +1,5 @@
 #include <stack>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -28,9 +29,29 @@ double solve(std::string message){
 	char op;
 	std::stack<double> nums;
 	std::stack<char> acts;
+	std::string fun_name;
+	std::string fun_args;
+	std::vector<std::string> fun_args_individual;
 	for(i = 0; i < message.length(); ++i){
 		if(message[i] == ' ')
 			continue;
+		else if(isalpha(message[i])){
+			fun_name = message.substr(i,message.find('(',i)-i);
+			fun_name.erase(fun_name.end());
+			for(auto it;message.find(',',);++it){
+
+			}
+//			fun_args_individual.push_back();
+			if(fun_name=="sin"){
+
+			}
+			else if (fun_name=="pow"){
+
+			}
+			else if(fun_name == "pi"){
+
+			}
+		}
 		else if(message[i] == '('){
 			acts.push(message[i]);
 		}
