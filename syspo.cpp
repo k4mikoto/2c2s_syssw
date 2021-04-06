@@ -37,9 +37,7 @@ double solve(std::string message){
 			continue;
 		else if(isalpha(message[i])){
 			fun_name = message.substr(i,message.find('(',i)-i);
-			fun_name.erase(fun_name.end());
-			fun_args=message.substr(message.find('(',i)-1,message.find(')',i)-message.find('(',i));
-			printf("%s",fun_args.c_str());
+			fun_args=message.substr(message.find('(',i)+1,message.find(')',i)-message.find('(',i)-1);
 			if(fun_name=="sin"){
 
 			}
@@ -49,6 +47,11 @@ double solve(std::string message){
 			else if(fun_name == "pi"){
 
 			}
+			i=message.find(')',i);
+			if(i==message.length()){
+				break;
+			}
+
 		}
 		else if(message[i] == '('){
 			acts.push(message[i]);
@@ -102,7 +105,7 @@ double solve(std::string message){
 
 int main() {
 	std::cout << solve("8+9-2*4") << "\n"; 			//  9
-	std::cout << solve("(2-6)*3+(3+4)") << "\n"; 	// -5
+	std::cout << solve("(2-6)*3+sin(3+4)") << "\n"; 	// -5
 	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
 	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
 	std::cout << solve("((2))-1/2") << "\n";		//  1.5
