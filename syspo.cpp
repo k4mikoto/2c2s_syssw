@@ -38,10 +38,8 @@ double solve(std::string message){
 		else if(isalpha(message[i])){
 			fun_name = message.substr(i,message.find('(',i)-i);
 			fun_name.erase(fun_name.end());
-			for(auto it;message.find(',',);++it){
-
-			}
-//			fun_args_individual.push_back();
+			fun_args=message.substr(message.find('(',i)-1,message.find(')',i)-message.find('(',i));
+			printf("%s",fun_args.c_str());
 			if(fun_name=="sin"){
 
 			}
