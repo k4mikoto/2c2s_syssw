@@ -38,7 +38,7 @@ double solve(std::string message){
 		else if(isalpha(message[i])){
 			fun_name = message.substr(i,message.find('(',i)-i);
 			fun_args=message.substr(message.find('(',i)+1,message.find(')',i)-message.find('(',i)-1);
-			if(fun_name=="sin"){
+			if(fun_name=="sins"){
 
 			}
 			else if (fun_name=="pow"){
