@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <math.h>
 
 int priority(char op){
 	switch(op){
@@ -37,9 +39,14 @@ double solve(std::string message){
 			continue;
 		else if(isalpha(message[i])){
 			fun_name = message.substr(i,message.find('(',i)-i);
-			fun_args=message.substr(message.find('(',i)+1,message.find(')',i)-message.find('(',i)-1);
-			if(fun_name=="sins"){
-
+			fun_args = message.substr(message.find('(',i)+1,message.find(')',i)-message.find('(',i)-1);
+			std::stringstream ss(fun_args);
+			std::string str;
+			while (getline(ss, str, ',')) {
+				fun_args_individual.push_back(str);
+			}
+			if(fun_name=="sin"){
+				nums.push(sin(solve(fun_args_individual[0])));
 			}
 			else if (fun_name=="pow"){
 
