@@ -26,34 +26,64 @@ double value(double a, double b, char op){
 }
 
 double solve(std::string message){
-	int i;
+	size_t i;
 	double a,b,val;
 	char op;
+
 	std::stack<double> nums;
 	std::stack<char> acts;
+
 	std::string fun_name;
 	std::string fun_args;
 	std::vector<std::string> fun_args_individual;
+
+	bool leave = false;
+	size_t nigga = 0;
+	size_t layer = 0;
 	for(i = 0; i < message.length(); ++i){
 		if(message[i] == ' ')
 			continue;
 		else if(isalpha(message[i])){
+			leave = false;
 			fun_name = message.substr(i,message.find('(',i)-i);
-			fun_args = message.substr(message.find('(',i)+1,message.find(')',i)-message.find('(',i)-1);
-			std::stringstream ss(fun_args);
-			std::string str;
-			while (getline(ss, str, ',')) {
-				fun_args_individual.push_back(str);
+			i = message.find('(',i);
+			for(auto k = i; !leave; ++k){
+				fun_args.push_back(message[k]);
+				if(message[k]=='(') layer++;
+				if(message[k]==')') layer--;
+				if(layer==0) leave = true;
+			}
+			fun_args.erase(fun_args.length()-1);
+			fun_args.erase(0,1);
+			nigga = 0;
+			std::string tmp;
+			tmp+=fun_args[0];
+			fun_args_individual.push_back(tmp);
+			nigga = 0;
+			for(size_t k = 1; k < fun_args.length(); ++k){
+				if(fun_args[k]=='(') layer++;
+				if(fun_args[k]==')') layer--;
+				if((fun_args[k]==',') && layer==0){
+					std::string str;
+					k++;
+					nigga++;
+					str = fun_args[k];
+					fun_args_individual.push_back(str);
+					continue;
+				}
+				fun_args_individual.at(nigga).push_back(fun_args[k]);
 			}
 			if(fun_name=="sin"){
 				nums.push(sin(solve(fun_args_individual[0])));
 			}
 			else if (fun_name=="pow"){
-
+				nums.push(pow(solve(fun_args_individual[0]),solve(fun_args_individual[1])));
 			}
 			else if(fun_name == "pi"){
-
+				nums.push(3.1415);
 			}
+			fun_args.erase();
+			fun_args_individual.clear();
 			i=message.find(')',i);
 			if(i==message.length()){
 				break;
@@ -112,10 +142,11 @@ double solve(std::string message){
 
 int main() {
 	std::cout << solve("8+9-2*4") << "\n"; 			//  9
-	std::cout << solve("(2-6)*3+sin(3+4)") << "\n"; 	// -5
+	std::cout << solve("(2-6)*3+(3+4)") << "\n"; 	// -5
 	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
 	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
 	std::cout << solve("((2))-1/2") << "\n";		//  1.5
+	std::cout << solve("1+1/4+sin(pi())+pow(2+1,2-3+3)") << "\n"; //10.25
 	system("pause");
 	return 0;
 }
