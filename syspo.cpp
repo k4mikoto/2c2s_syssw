@@ -38,7 +38,7 @@ double solve(std::string message){
 	std::vector<std::string> fun_args_individual;
 
 	bool leave = false;
-	size_t nigga = 0;
+	size_t arg_num = 0;
 	size_t layer = 0;
 	for(i = 0; i < message.length(); ++i){
 		if(message[i] == ' ')
@@ -55,23 +55,22 @@ double solve(std::string message){
 			}
 			fun_args.erase(fun_args.length()-1);
 			fun_args.erase(0,1);
-			nigga = 0;
 			std::string tmp;
 			tmp+=fun_args[0];
 			fun_args_individual.push_back(tmp);
-			nigga = 0;
+			arg_num = 0;
 			for(size_t k = 1; k < fun_args.length(); ++k){
 				if(fun_args[k]=='(') layer++;
 				if(fun_args[k]==')') layer--;
 				if((fun_args[k]==',') && layer==0){
 					std::string str;
 					k++;
-					nigga++;
+					arg_num++;
 					str = fun_args[k];
 					fun_args_individual.push_back(str);
 					continue;
 				}
-				fun_args_individual.at(nigga).push_back(fun_args[k]);
+				fun_args_individual[arg_num].push_back(fun_args[k]);
 			}
 			if(fun_name=="sin"){
 				nums.push(sin(solve(fun_args_individual[0])));
