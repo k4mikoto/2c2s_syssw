@@ -11,6 +11,8 @@ int priority(char op){
 		case '-': return 1;
 		case '*':
 		case '/': return 2;
+		case '>':
+		case '<': return 3;
 	}
 	return 0;
 }
@@ -21,15 +23,17 @@ double value(double a, double b, char op){
 		case '-': return a - b;
 		case '*': return a * b;
 		case '/': return a / b;
+		case '>': return a > b;
+		case '<': return a < b;
 	}
 	return 0;
 }
 
 double solve(std::string message){
-	size_t i;
+	size_t i,v;
 	double a,b,val;
 	char op;
-
+	size_t len;
 	std::stack<double> nums;
 	std::stack<char> acts;
 
@@ -75,11 +79,55 @@ double solve(std::string message){
 			if(fun_name=="sin"){
 				nums.push(sin(solve(fun_args_individual[0])));
 			}
+			else if (fun_name=="cos"){
+				nums.push(cos(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="tan"){
+				nums.push(tan(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="atan"){
+				nums.push(atan(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="asin"){
+				nums.push(asin(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="acos"){
+				nums.push(acos(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="log"){
+				nums.push(log(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="sqrt"){
+				nums.push(sqrt(solve(fun_args_individual[0])));
+			}
+			else if (fun_name=="sqrt"){
+				nums.push(exp(solve(fun_args_individual[0])));
+			}
 			else if (fun_name=="pow"){
-				nums.push(pow(solve(fun_args_individual[0]),solve(fun_args_individual[1])));
+				nums.push(pow(solve(fun_args_individual[0]), solve(fun_args_individual[1])));
 			}
 			else if(fun_name == "pi"){
 				nums.push(3.1415);
+			}
+			else if(fun_name == "println"){
+				len = printf("%f\n",solve(fun_args_individual[0]));
+				nums.push((double)len);
+			}
+			else if(fun_name == "if"){
+				if(!fun_args_individual[0].find("if")){
+					if(solve(fun_args_individual[0])){
+						std::string str;
+						v = message.find('{',i);
+						for(auto k = v; !leave; ++k){
+							str.push_back(message[k]);
+							if(message[k]=='{') layer++;
+							if(message[k]=='}') layer--;
+							if(layer==0) leave = true;
+						}
+						fun_args_individual.push_back(str);
+						solve(fun_args_individual[1]);
+					}
+				}
 			}
 			fun_args.erase();
 			fun_args_individual.clear();
@@ -145,7 +193,7 @@ int main() {
 	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
 	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
 	std::cout << solve("((2))-1/2") << "\n";		//  1.5
-	std::cout << solve("1+1/4+sin(pi())+pow(2+1,2-3+3)") << "\n"; //10.25
+	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){println(1)"); //10.25
 	system("pause");
 	return 0;
 }
