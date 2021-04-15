@@ -8,11 +8,11 @@
 int priority(char op){
 	switch(op){
 		case '+':
-		case '-': return 1;
+		case '-': return 2;
 		case '*':
-		case '/': return 2;
+		case '/': return 3;
 		case '>':
-		case '<': return 3;
+		case '<': return 1;
 	}
 	return 0;
 }
@@ -193,7 +193,7 @@ int main() {
 	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
 	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
 	std::cout << solve("((2))-1/2") << "\n";		//  1.5
-	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){println(1)"); //10.25
+	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){println(1)}"); //10.25
 	system("pause");
 	return 0;
 }
