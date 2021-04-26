@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <math.h>
+#include <map>
 
 int priority(char op){
 	switch(op){
@@ -36,6 +37,7 @@ double solve(std::string message){
 	size_t len;
 	std::stack<double> nums;
 	std::stack<char> acts;
+	std::map<std::string, double> variables;
 
 	std::string fun_name;
 	std::string fun_args;
@@ -44,6 +46,7 @@ double solve(std::string message){
 	bool leave = false;
 	size_t arg_num = 0;
 	size_t layer = 0;
+
 	for(i = 0; i < message.length(); ++i){
 		if(message[i] == ' ')
 			continue;
@@ -100,7 +103,7 @@ double solve(std::string message){
 			else if (fun_name=="sqrt"){
 				nums.push(sqrt(solve(fun_args_individual[0])));
 			}
-			else if (fun_name=="sqrt"){
+			else if (fun_name=="exp"){
 				nums.push(exp(solve(fun_args_individual[0])));
 			}
 			else if (fun_name=="pow"){
@@ -127,6 +130,23 @@ double solve(std::string message){
 						fun_args_individual.push_back(str);
 						solve(fun_args_individual[1]);
 					}
+				}
+			}
+			else if(fun_name == "var"){
+				switch(fun_args_individual.size()){
+				case 1:{
+					nums.push(variables[fun_args_individual[0]]);
+					break;
+				}
+				case 2:{
+					variables[fun_args_individual[0]] = solve(fun_args_individual[1]);
+					break;
+				}
+				case 3:{
+					variables[fun_args_individual[0]] = value(variables[fun_args_individual[0]],solve(fun_args_individual[2]),solve(fun_args_individual[1]));
+					break;
+				}
+				default: throw std::logic_error("Not a valid 'var' usage");
 				}
 			}
 			fun_args.erase();
