@@ -30,19 +30,20 @@ double value(double a, double b, char op){
 	return 0;
 }
 
+std::map<std::string, double> variables;
+
 double solve(std::string message){
 	size_t i,v;
 	double a,b,val;
 	char op;
-	size_t len;
 	std::stack<double> nums;
 	std::stack<char> acts;
-	std::map<std::string, double> variables;
 
 	std::string fun_name;
 	std::string fun_args;
 	std::vector<std::string> fun_args_individual;
 
+	bool type = false;
 	bool leave = false;
 	size_t arg_num = 0;
 	size_t layer = 0;
@@ -66,6 +67,10 @@ double solve(std::string message){
 			tmp+=fun_args[0];
 			fun_args_individual.push_back(tmp);
 			arg_num = 0;
+//			if (fun_name == "println") {
+//				printf("%s\n",fun_args.c_str());
+//				system("pause");
+//			}
 			for(size_t k = 1; k < fun_args.length(); ++k){
 				if(fun_args[k]=='(') layer++;
 				if(fun_args[k]==')') layer--;
@@ -113,24 +118,27 @@ double solve(std::string message){
 				nums.push(3.1415);
 			}
 			else if(fun_name == "println"){
-				len = printf("%f\n",solve(fun_args_individual[0]));
-				nums.push((double)len);
+				nums.push((double)printf(">>%f\n",solve(fun_args_individual[0])));
 			}
 			else if(fun_name == "if"){
-				if(!fun_args_individual[0].find("if")){
+//				printf("faiif at %d\n",!(fun_args_individual[0].find("if")+1));
+				if(!(fun_args_individual[0].find("if")+1)){
 					if(solve(fun_args_individual[0])){
 						std::string str;
 						v = message.find('{',i);
+						layer = 0;
+						leave = false;
 						for(auto k = v; !leave; ++k){
 							str.push_back(message[k]);
 							if(message[k]=='{') layer++;
 							if(message[k]=='}') layer--;
 							if(layer==0) leave = true;
 						}
-						fun_args_individual.push_back(str);
-						solve(fun_args_individual[1]);
+						printf("\ninside if %s\n",str.c_str());
+						solve(str);
 					}
 				}
+				type = true;
 			}
 			else if(fun_name == "var"){
 				switch(fun_args_individual.size()){
@@ -140,10 +148,7 @@ double solve(std::string message){
 				}
 				case 2:{
 					variables[fun_args_individual[0]] = solve(fun_args_individual[1]);
-					break;
-				}
-				case 3:{
-					variables[fun_args_individual[0]] = value(variables[fun_args_individual[0]],solve(fun_args_individual[2]),solve(fun_args_individual[1]));
+//					printf("%s set %f\n",fun_args_individual[0].c_str(),variables[fun_args_individual[0]]);
 					break;
 				}
 				default: throw std::logic_error("Not a valid 'var' usage");
@@ -151,7 +156,13 @@ double solve(std::string message){
 			}
 			fun_args.erase();
 			fun_args_individual.clear();
-			i=message.find(')',i);
+			if(type){
+
+			} else{
+				i = message.find(')',i);
+			}
+			type = false;
+			printf("%c",message[i]);
 			if(i==message.length()){
 				break;
 			}
@@ -213,7 +224,8 @@ int main() {
 	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
 	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
 	std::cout << solve("((2))-1/2") << "\n";		//  1.5
-	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){println(1)}"); //10.25
+	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){ println(123) } "); //10.25
+	solve("var(nigga,4+7) var(nigga,var(nigga)+1) println(var(nigga)) if(var(nigga)>11){ println(var(nigga)+10) }  ");
 	system("pause");
 	return 0;
 }
