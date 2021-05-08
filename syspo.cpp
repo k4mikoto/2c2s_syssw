@@ -134,7 +134,7 @@ double solve(std::string message){
 						i = k - 1;
 						solve(str);
 					}
-				} else throw std::logic_error("if should'nt contain 'if','for', or 'while' inside of round brackets");
+				} else throw std::logic_error("'if' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "while"){
 				if(!(fun_args.find("if")+1 || fun_args.find("while")+1 || fun_args.find("for")+1)){
@@ -153,7 +153,7 @@ double solve(std::string message){
 					i = k - 1;
 					while(solve(fun_args_individual[0]))
 						solve(str);
-				} else throw std::logic_error("while should'nt contain 'if','for', or 'while' inside of round brackets");
+				} else throw std::logic_error("'while' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "for"){
 				if(!(fun_args.find("if")+1 || fun_args.find("while")+1 || fun_args.find("for")+1)){
@@ -172,7 +172,7 @@ double solve(std::string message){
 					i = k - 1;
 					for(solve(fun_args_individual[0]); solve(fun_args_individual[1]); solve(fun_args_individual[2]))
 						solve(str);
-				} else throw std::logic_error("while should'nt contain 'if','for', or 'while' inside of round brackets");
+				} else throw std::logic_error("'for' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "var"){
 				switch(fun_args_individual.size()){
