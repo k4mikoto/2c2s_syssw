@@ -258,7 +258,6 @@ int main(int argc, char** argv) {
 	inFile.open(argv[1]);
 	strStream << inFile.rdbuf();
 	std::string quieres = strStream.str();
-	std::cout << quieres;
 	solve(quieres);
 	system("pause");
 	return 0;
