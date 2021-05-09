@@ -1,6 +1,7 @@
 #include <stack>
 #include <vector>
 #include <string>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <math.h>
@@ -132,7 +133,7 @@ double solve(std::string message){
 						str.erase(str.length()-1);
 						str.erase(0,1);
 						i = k - 1;
-						solve(str);
+						nums.push(solve(str));
 					}
 				} else throw std::logic_error("'if' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
@@ -154,6 +155,7 @@ double solve(std::string message){
 					while(solve(fun_args_individual[0])){
 						solve(str);
 					}
+					nums.push(0);
 				} else throw std::logic_error("'while' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "for"){
@@ -171,6 +173,9 @@ double solve(std::string message){
 					str.erase(str.length()-1);
 					str.erase(0,1);
 					i = k - 1;
+
+						printf("%s %c%c",str.c_str(),message[i-1],message[i]);
+						system("pause");
 					for(solve(fun_args_individual[0]); solve(fun_args_individual[1]); solve(fun_args_individual[2]))
 						solve(str);
 				} else throw std::logic_error("'for' should'nt contain 'if', 'for', or 'while' inside of round brackets");
@@ -246,25 +251,18 @@ double solve(std::string message){
 	return nums.top();
 }
 
-int main() {
-	std::cout << solve("8+9-2*4") << "\n"; 			//  9
-	std::cout << solve("(2-6)*3+(3+4)") << "\n"; 	// -5
-	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
-	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
-	std::cout << solve("((2))-1/2") << "\n";		//  1.5
-	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){ println(123) } "); //10.25
-	solve("var(test,4+7) var(test,var(test)+1) println(var(test)) if(var(test)>11){ println(var(test)+10) }  ");
-	solve(	"var(xs,7)"
-			"println(var(xs))"
-			"while(var(xs)<50) {"
-			" var(xs, var(xs)*2+7)"
-			"}"
-			"println(var(xs))"
-			"for(var(y,2); (var(y)+2*var(xs)) < 300; var(y,var(y)+8)) {"
-			" var(xs,var(xs)+pow(var(y),2))"
-			"}"
-			"println(var(xs))"
-			"println(var(y))"); // 7 106 209 18
+int main(int argc, char** argv) {
+	if (argc < 2) {
+		std::cout << "Next time, pass me a filename as an argument [:'-':] " << std::endl;
+		return 0;
+	}
+	std::ifstream inFile;
+	std::stringstream strStream;
+	inFile.open(argv[1]);
+	strStream << inFile.rdbuf();
+	std::string quieres = strStream.str();
+	std::cout << quieres;
+	solve(quieres);
 	system("pause");
 	return 0;
 }
