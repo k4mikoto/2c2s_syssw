@@ -151,8 +151,9 @@ double solve(std::string message){
 					str.erase(str.length()-1);
 					str.erase(0,1);
 					i = k - 1;
-					while(solve(fun_args_individual[0]))
+					while(solve(fun_args_individual[0])){
 						solve(str);
+					}
 				} else throw std::logic_error("'while' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "for"){
@@ -182,6 +183,7 @@ double solve(std::string message){
 				}
 				case 2:{
 					variables[fun_args_individual[0]] = solve(fun_args_individual[1]);
+					nums.push(variables[fun_args_individual[0]]);
 					break;
 				}
 				default: throw std::logic_error("Not a valid 'var' usage");
@@ -245,13 +247,24 @@ double solve(std::string message){
 }
 
 int main() {
-//	std::cout << solve("8+9-2*4") << "\n"; 			//  9
-//	std::cout << solve("(2-6)*3+(3+4)") << "\n"; 	// -5
-//	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
-//	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
-//	std::cout << solve("((2))-1/2") << "\n";		//  1.5
+	std::cout << solve("8+9-2*4") << "\n"; 			//  9
+	std::cout << solve("(2-6)*3+(3+4)") << "\n"; 	// -5
+	std::cout << solve("5*2+1-7/3-2") << "\n";	 	//  6.666
+	std::cout << solve("((2+1+3)+6)*4") << "\n";	// 48
+	std::cout << solve("((2))-1/2") << "\n";		//  1.5
 	solve("println(1+1/4+sin(pi())+pow(2+1,2-3+3)) if(2>1){ println(123) } "); //10.25
-	solve("var(nigga,4+7) var(nigga,var(nigga)+1) println(var(nigga)) if(var(nigga)>11){ println(var(nigga)+10) }  ");
+	solve("var(test,4+7) var(test,var(test)+1) println(var(test)) if(var(test)>11){ println(var(test)+10) }  ");
+	solve(	"var(xs,7)"
+			"println(var(xs))"
+			"while(var(xs)<50) {"
+			" var(xs, var(xs)*2+7)"
+			"}"
+			"println(var(xs))"
+			"for(var(y,2); (var(y)+2*var(xs)) < 300; var(y,var(y)+8)) {"
+			" var(xs,var(xs)+pow(var(y),2))"
+			"}"
+			"println(var(xs))"
+			"println(var(y))"); // 7 106 209 18
 	system("pause");
 	return 0;
 }
