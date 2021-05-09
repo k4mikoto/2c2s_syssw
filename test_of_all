@@ -1,0 +1,1 @@
+println(1+1/4+sin(pi())+pow(2+1,2-3+3)) var(test,4+7) var(test,var(test)+1) println(var(test)) if(var(test)>11){println(var(test)+10)} var(xs,7) println(var(xs)) while(var(xs)<50){var(xs, var(xs)*2+7)} println(var(xs)) for(var(y,2); (var(y)+2*var(xs)) < 300; var(y,var(y)+8)){var(xs,var(xs)+pow(var(y),2))} println(var(xs)) println(var(y))
