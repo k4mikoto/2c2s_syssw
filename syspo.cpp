@@ -173,9 +173,6 @@ double solve(std::string message){
 					str.erase(str.length()-1);
 					str.erase(0,1);
 					i = k - 1;
-
-						printf("%s %c%c",str.c_str(),message[i-1],message[i]);
-						system("pause");
 					for(solve(fun_args_individual[0]); solve(fun_args_individual[1]); solve(fun_args_individual[2]))
 						solve(str);
 				} else throw std::logic_error("'for' should'nt contain 'if', 'for', or 'while' inside of round brackets");
@@ -254,7 +251,7 @@ double solve(std::string message){
 int main(int argc, char** argv) {
 	if (argc < 2) {
 		std::cout << "Next time, pass me a filename as an argument [:'-':] " << std::endl;
-		return 0;
+		return 1;
 	}
 	std::ifstream inFile;
 	std::stringstream strStream;
