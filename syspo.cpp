@@ -175,6 +175,7 @@ double solve(std::string message){
 					i = k - 1;
 					for(solve(fun_args_individual[0]); solve(fun_args_individual[1]); solve(fun_args_individual[2]))
 						solve(str);
+					nums.push(0);
 				} else throw std::logic_error("'for' should'nt contain 'if', 'for', or 'while' inside of round brackets");
 			}
 			else if(fun_name == "var"){
