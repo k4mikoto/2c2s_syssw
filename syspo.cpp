@@ -120,19 +120,19 @@ double solve(std::string message){
 			else if(fun_name == "if"){
 				if(!(fun_args.find("if")+1 || fun_args.find("while")+1 || fun_args.find("for")+1)){
 					i = message.find('{',i);
+					std::string str;
+					layer = 0;
+					leave = false;
+					for(k = i; !leave; ++k){
+						str.push_back(message[k]);
+						if(message[k]=='{') layer++;
+						if(message[k]=='}') layer--;
+						if(layer==0) leave = true;
+					}
+					str.erase(str.length()-1);
+					str.erase(0,1);
+					i = k - 1;
 					if(solve(fun_args_individual[0])){
-						std::string str;
-						layer = 0;
-						leave = false;
-						for(k = i; !leave; ++k){
-							str.push_back(message[k]);
-							if(message[k]=='{') layer++;
-							if(message[k]=='}') layer--;
-							if(layer==0) leave = true;
-						}
-						str.erase(str.length()-1);
-						str.erase(0,1);
-						i = k - 1;
 						nums.push(solve(str));
 					}
 				} else throw std::logic_error("'if' should'nt contain 'if', 'for', or 'while' inside of round brackets");
